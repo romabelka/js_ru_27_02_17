@@ -1,10 +1,16 @@
-import React, { Component } from 'react'
+import React, {Component, PropTypes} from 'react'
 import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
 
 class CommentList extends Component {
     static defaultProps = {
         comments: []
+    }
+
+    static propTypes = {
+        comments: PropTypes.array.isRequired,
+        isOpen: PropTypes.bool.isRequired,
+        toggleOpen: PropTypes.func.isRequired
     }
 
     componentWillMount() {
@@ -16,7 +22,9 @@ class CommentList extends Component {
     }
 
     componentDidUpdate() {
-        this.size = this.container.getBoundingClientRect()
+        this.size = this
+            .container
+            .getBoundingClientRect()
     }
 
     render() {
@@ -24,7 +32,10 @@ class CommentList extends Component {
         console.log('---', this.size)
         return (
             <div ref={this.getContainerRef}>
-                <a href="#" onClick={toggleOpen}>{isOpen ? 'hide' : 'show'} comments</a>
+                <a href="#" onClick={toggleOpen}>{isOpen
+                        ? 'hide'
+                        : 'show'}
+                    comments</a>
                 {this.getBody()}
             </div>
         )
@@ -39,7 +50,8 @@ class CommentList extends Component {
 
     getBody() {
         const {comments, isOpen} = this.props
-        if (!isOpen) return null
+        if (!isOpen) 
+            return null
 
         if (!comments.length) {
             return <div>
@@ -49,7 +61,7 @@ class CommentList extends Component {
             </div>
         }
 
-        const commentItems = comments.map(comment => <li key={comment.id}><Comment comment={comment} /></li>)
+        const commentItems = comments.map(comment => <li key={comment.id}><Comment comment={comment}/></li>)
         return (
             <div>
                 <ul>
